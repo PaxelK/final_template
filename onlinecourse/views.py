@@ -143,14 +143,15 @@ def show_exam_result(request, course_id, submission_id):
 
     context = {}
     score = 0
-    choice_ids = Submission.choices
-    for choice_id in choice_ids:
-        choice = Choice.objects.get(pk=choice_id)
+    choices = submission.choices
+
+    for choice in choices:
         if(choice.correct):
             score = score + 1
-    
+
+
     context['course'] = course_id
-    context['selected_ids'] = choice_ids   # Contains list of choice ids
+    context['choices'] = choices   # Contains list of choice ids
     context['score'] = score   # returns integer number of score    
 
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
