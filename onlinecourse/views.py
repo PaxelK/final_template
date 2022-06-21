@@ -116,7 +116,11 @@ def submit(request, course_id):
     enrollment = Enrollment.objects.get(user=user, course=course)
 
     submission = Submission.objects.create(enrollment=enrollment)
-    submission.choices = extract_answers(request)
+
+    #submission.choices = extract_answers(request)
+
+    for choice_id in extract_answers(request):
+        submission.choices.add(Choice.objects.get(pk=choice_id))
 
     return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(course_id, submission.id,)))
 
@@ -128,6 +132,7 @@ def extract_answers(request):
             value = request.POST[key]
             choice_id = int(value)
             submitted_answers.append(choice_id)
+
     return submitted_answers
 
 
@@ -155,5 +160,3 @@ def show_exam_result(request, course_id, submission_id):
     context['score'] = score   # returns integer number of score    
 
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
-
-# python3 manage.py runserver
