@@ -143,11 +143,11 @@ def show_exam_result(request, course_id, submission_id):
 
     context = {}
     score = 0
-    choices = submission.choices
+    choices = submission.choices.all()
 
     for choice in choices:
         if(choice.correct):
-            score = score + 1
+            score += choice.question.grade
 
 
     context['course'] = course_id
@@ -156,3 +156,4 @@ def show_exam_result(request, course_id, submission_id):
 
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
 
+# python3 manage.py runserver
