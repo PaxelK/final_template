@@ -53,7 +53,7 @@
                 <a href="#exam" class="btn btn-primary" data-toggle="collapse">Take Exam</a>
                 <div id="exam" class="collapse">
                     {% if user.is_authenticated %}
-                    <form id="questionform" action="{% url 'onlinecourse:submit' %}" method="post">
+                    <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
                         {% csrf_token %}
                         {% for question in course.question_set.all %}
                             <div class="card-header"><h5>{{question.content}}</h5></div>
