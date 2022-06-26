@@ -151,19 +151,22 @@ def show_exam_result(request, course_id, submission_id):
     context = {}
     score = 0
     choices = submission.choices.all()
-    
-    for question in course.question_set.all():
+    questions = course.question_set.all()
+    for question in questions:
         if(question.is_get_score(choices)):
             #print("Question: " + question.content + "\nRESULT = " + str(result))
             score += question.grade
     """
     for choice in choices:
         if(choice.is_correct):
-            print("AXEEEL   choice.question.grade: " +  str(choice.question.grade))
             score += choice.question.grade
     """
+    earnable_points = len(Choice.objects.filter(is_correct=True))
+
     context['course'] = course
     context['choices'] = choices   # Contains list of choice ids
     context['score'] = score   # returns integer number of score    
+    context['questions'] = questions
+    context['earnable_points'] = earnable_points
 
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context)
