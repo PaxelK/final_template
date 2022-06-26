@@ -118,6 +118,9 @@ def submit(request, course_id):
     submission = Submission.objects.create(enrollment=enrollment)
 
     choices = extract_answers(request)
+
+    #choice.question.is_get_score(choice.question.choice_set.all())
+
     submission.choices.set(choices)
     submission_id = submission.id
 
@@ -131,7 +134,7 @@ def extract_answers(request):
             value = request.POST[key]
             choice_id = int(value)
             submitted_answers.append(choice_id)
-
+    
     return submitted_answers
 
 
@@ -148,17 +151,17 @@ def show_exam_result(request, course_id, submission_id):
     context = {}
     score = 0
     choices = submission.choices.all()
-
-
+    
     for question in course.question_set.all():
-        question.is_get_score(choices)    
-
-
-
+        if(question.is_get_score(choices)):
+            #print("Question: " + question.content + "\nRESULT = " + str(result))
+            score += question.grade
+    """
     for choice in choices:
-        if(choice.correct):
+        if(choice.is_correct):
+            print("AXEEEL   choice.question.grade: " +  str(choice.question.grade))
             score += choice.question.grade
-
+    """
     context['course'] = course
     context['choices'] = choices   # Contains list of choice ids
     context['score'] = score   # returns integer number of score    

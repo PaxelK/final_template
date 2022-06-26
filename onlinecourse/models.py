@@ -107,12 +107,17 @@ class Question(models.Model):
     grade = models.IntegerField(default=0)  # question grade/mark
 
     # <HINT> A sample model method to calculate if learner get the score of the question
-    def is_get_score(self, selected_ids):
-        all_answers = self.choice_set.filter(correct=True).count()
-        selected_correct = self.choice_set.filter(correct=True, id__in=selected_ids).count()
-        grade = selected_correct
+    def is_get_score(self, selected_ids):    
+        all_answers = self.choice_set.filter(is_correct=True).count()
+        selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
+        selected_wrong = self.choice_set.filter(is_correct=False, id__in=selected_ids).count()
+
+
+        self.grade = selected_correct
         
-        if all_answers == selected_correct:
+        print("AXEEEL selected_correct: " + str(selected_correct))
+
+        if all_answers == selected_correct-selected_wrong:
             return True
         else:
             return False
@@ -128,7 +133,7 @@ class Question(models.Model):
 class Choice(models.Model):   
     question = models.ForeignKey(Question, on_delete=models.CASCADE) # Foreign key to question
     content = models.TextField() # Choice text
-    correct = models.BooleanField(default=False)  # Choice correct/wrong
+    is_correct = models.BooleanField(default=False)  # Choice correct/wrong
 
 # <HINT> The submission model
 # One enrollment could have multiple submission
