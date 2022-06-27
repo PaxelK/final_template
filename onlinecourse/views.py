@@ -155,7 +155,7 @@ def show_exam_result(request, course_id, submission_id):
             score += question.grade
 
     earnable_points = len(Choice.objects.filter(is_correct=True))
-    
+
     context = {}
     context['course'] = course
     context['choices'] = choices   # Contains list of choice ids

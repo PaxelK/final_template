@@ -58,6 +58,7 @@ class Course(models.Model):
     image = models.ImageField(upload_to='course_images/')
     description = models.CharField(max_length=1000)
     pub_date = models.DateField(null=True)
+    passing_grade = models.IntegerField(default=0)
     instructors = models.ManyToManyField(Instructor)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, through='Enrollment')
     total_enrollment = models.IntegerField(default=0)

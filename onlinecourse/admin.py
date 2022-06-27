@@ -22,7 +22,7 @@ class QuestionAdmin(admin.ModelAdmin):
 # Register your models here.
 class CourseAdmin(admin.ModelAdmin):
     inlines = [LessonInline]
-    list_display = ('name', 'pub_date')
+    list_display = ('name', 'pub_date', 'passing_grade')
     list_filter = ['pub_date']
     search_fields = ['name', 'description']
 
