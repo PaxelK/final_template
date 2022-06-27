@@ -119,8 +119,6 @@ def submit(request, course_id):
 
     choices = extract_answers(request)
 
-    #choice.question.is_get_score(choice.question.choice_set.all())
-
     submission.choices.set(choices)
     submission_id = submission.id
 
@@ -147,22 +145,18 @@ def extract_answers(request):
 def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = Submission.objects.get(id=submission_id)
-
-    context = {}
+    
     score = 0
     choices = submission.choices.all()
     questions = course.question_set.all()
+
     for question in questions:
         if(question.is_get_score(choices)):
-            #print("Question: " + question.content + "\nRESULT = " + str(result))
             score += question.grade
-    """
-    for choice in choices:
-        if(choice.is_correct):
-            score += choice.question.grade
-    """
-    earnable_points = len(Choice.objects.filter(is_correct=True))
 
+    earnable_points = len(Choice.objects.filter(is_correct=True))
+    
+    context = {}
     context['course'] = course
     context['choices'] = choices   # Contains list of choice ids
     context['score'] = score   # returns integer number of score    

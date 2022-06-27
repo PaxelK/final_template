@@ -40,7 +40,10 @@
     <!-- TODO: FIX TEXT COLOR -->
     <!-- TODO: FIX ADMIN SETTING FOR PASSING GRADE SCORE LIMIT? -->
     <!-- TODO: FIX ANSWERS GROUPED UNDER EACH QUESTION -->
-
+    <!--
+    <p class="text-success">.text-success</p>
+    <p class="text-danger">.text-danger</p>
+     -->
         <div class="alert alert-success">
             <!--HINT Display passed info -->
             <b> Congratulations {{ user.first_name }}! </b> You have passed the exam and completed the course with score: {{ score }}/{{earnable_points}} 
@@ -55,7 +58,28 @@
     <div class="card-columns-vertical mt-1">
         <h4 class="container-fluid"> Exam results  </h4>
         <!--HINT Display exam results-->
-        
+            {% for question in questions %}
+            <div class="card-columns-vertical">
+                <div class="card mt-1" bg-white"  style="width: 36rem;">
+                    <div class="card mt-1 bg-light">
+                        <h5 class="card-title"> {{ question.content }} </h5>
+                    </div>
+                    {% for choice in question.choice_set.all %}
+                        {% if choice.is_correct %}
+                            <p class="card-text text-success">{{ choice.content}}</p>
+                        {% else %}
+                            <p class="card-text">{{ choice.content}}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+
+
+
+
+
+        <!--
             {% for choice in choices %}
             <div class="card-columns-vertical">
                 <div class="card mt-1" bg-white"  style="width: 36rem;">
@@ -66,6 +90,7 @@
                 </div>
             </div>
             {% endfor %}
+        -->
         
     </div>
 </div>

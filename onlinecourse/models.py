@@ -112,11 +112,8 @@ class Question(models.Model):
         selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
         selected_wrong = self.choice_set.filter(is_correct=False, id__in=selected_ids).count()
 
-
         self.grade = selected_correct
         
-        print("AXEEEL selected_correct: " + str(selected_correct))
-
         if all_answers == selected_correct-selected_wrong:
             return True
         else:
